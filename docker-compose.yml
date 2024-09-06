@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  php:
+    build:
+      dockerfile: './php_Dockerfile'
+    volumes:
+      - ./app-data:/var/www/html
+      - ./divers:/home/divers
+    ports:
+      - 8080:80
+    depends_on:
+      - mysql
+      
+  mysql:
+    build:
+      dockerfile: './mysql_Dockerfile'
+    environment:
+      MYSQL_ROOT_PASSWORD: secret
+      MYSQL_DATABASE: mydatabase
+      MYSQL_USER: pascal
+      MYSQL_PASSWORD: pascal
+    ports:
+      - 3306:3306
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+      - ./divers:/home/divers
+      
