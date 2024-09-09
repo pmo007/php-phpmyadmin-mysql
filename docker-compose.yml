@@ -1,8 +1,7 @@
 version: '3.9'
 services:
   php:
-    build:
-      dockerfile: './php_Dockerfile'
+    build: './build/php'
     volumes:
       - ./app-data:/var/www/html
       - ./divers:/home/divers
@@ -10,10 +9,18 @@ services:
       - 8080:80
     depends_on:
       - mysql
-      
+
+  phpmyadmin:
+    image: phpmyadmin/phpmyadmin
+    ports:
+      - "8081:80"
+    environment:
+      PMA_HOST: mysql
+      PMA_USER: root
+      PMA_PASSWORD: secret
+
   mysql:
-    build:
-      dockerfile: './mysql_Dockerfile'
+    build: './build/mysql'
     environment:
       MYSQL_ROOT_PASSWORD: secret
       MYSQL_DATABASE: mydatabase
@@ -23,5 +30,3 @@ services:
       - 3306:3306
     volumes:
       - ./mysql-data:/var/lib/mysql
-      - ./divers:/home/divers
-      
